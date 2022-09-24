@@ -1,0 +1,36 @@
+version: "3"
+
+networks:
+  server-network:
+
+services:
+  db:
+    image: postgres:13
+    container_name: server-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: eteserverdb
+    networks:
+      - server-network
+
+  ete-server:
+    container_name: eteserver
+    build:
+      context: .
+      dockerfile: docker/test-server/Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "3735:3735"
+    volumes:
+      - ./:/app
+    networks:
+      - server-network
+
+# docker build -f ./docker/test-server/Dockerfile .
+# docker-compose up --build

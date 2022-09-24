@@ -158,6 +158,14 @@ if any(os.path.isfile(x) for x in config_locations):
     TIME_ZONE = section.get("time_zone", TIME_ZONE)
     DEBUG = section.getboolean("debug", DEBUG)
 
+    if not DEBUG:
+        DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+        STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+        AWS_ACCESS_KEY_ID = section.get("AWS_ACCESS_KEY_ID", "")
+        AWS_SECRET_ACCESS_KEY = section.get("AWS_SECRET_ACCESS_KEY", "")
+        AWS_STORAGE_BUCKET_NAME = section.get("AWS_STORAGE_BUCKET_NAME", "")
+        AWS_DEFAULT_ACL = 'public-read'
+
     if "redis_uri" in section:
         ETEBASE_REDIS_URI = section.get("redis_uri")
 
