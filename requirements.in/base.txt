@@ -7,3 +7,5 @@ uvicorn[standard]
 aiofiles
 redis>=4.2.0rc1
 psycopg2
+django-storages
+boto3

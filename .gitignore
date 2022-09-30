@@ -14,7 +14,8 @@ __pycache__
 
 /etebase_server_settings.py
 /secret.txt
-
+/docker/test-server/etebase-server.ini
 /build
 /dist
+/data
 /*.egg-info
