@@ -10,6 +10,7 @@ WORKDIR /app
 
 # install packages and pip requirements first, in a single step,
 COPY /requirements.in/base.txt /requirements.txt
+# libldap2-dev
 RUN set -ex ;\
     apk add libpq postgresql-dev --virtual .build-deps coreutils gcc libc-dev libffi-dev make ;\
     pip install -U pip ;\

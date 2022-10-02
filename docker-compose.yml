@@ -22,11 +22,11 @@ services:
     container_name: eteserver
     build:
       context: .
-      dockerfile: docker/test-server/Dockerfile # change this line to 'docker/prod-server/Dockerfile' for prod.
+      dockerfile: docker/prod-server/Dockerfile # change this line to 'docker/prod-server/Dockerfile' for prod.
     depends_on:
       - db
     ports:
-      - "3735:3735"  # change this line to "80:80" for prod.
+      - "80:80"  # change this line to "80:80" for prod. (test-server: "3735:3735")
     volumes:
       - ./:/app
     networks:

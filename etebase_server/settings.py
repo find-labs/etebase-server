@@ -140,8 +140,8 @@ config_locations = [
     "/etc/etebase-server/etebase-server.ini",
 ]
 
-ETEBASE_CREATE_USER_FUNC = "etebase_server.django.utils.create_user_blocked"
-
+# ETEBASE_CREATE_USER_FUNC = "etebase_server.django.utils.create_user_blocked"
+## ETEBASE_CREATE_USER_FUNC = "etebase_server.myauth.ldap.create_user"
 # Use config file if present
 if any(os.path.isfile(x) for x in config_locations):
     config = configparser.ConfigParser()
@@ -164,7 +164,7 @@ if any(os.path.isfile(x) for x in config_locations):
         AWS_ACCESS_KEY_ID = section.get("AWS_ACCESS_KEY_ID", "")
         AWS_SECRET_ACCESS_KEY = section.get("AWS_SECRET_ACCESS_KEY", "")
         AWS_STORAGE_BUCKET_NAME = section.get("AWS_STORAGE_BUCKET_NAME", "")
-        AWS_DEFAULT_ACL = 'public-read'
+        AWS_DEFAULT_ACL = 'public-read'  # None
 
     if "redis_uri" in section:
         ETEBASE_REDIS_URI = section.get("redis_uri")
