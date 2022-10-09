@@ -160,7 +160,7 @@ if any(os.path.isfile(x) for x in config_locations):
 
     if not DEBUG:
         DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-        STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+        # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'  # un comment to save static files on S3
         AWS_ACCESS_KEY_ID = section.get("AWS_ACCESS_KEY_ID", "")
         AWS_SECRET_ACCESS_KEY = section.get("AWS_SECRET_ACCESS_KEY", "")
         AWS_STORAGE_BUCKET_NAME = section.get("AWS_STORAGE_BUCKET_NAME", "")

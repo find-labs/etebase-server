@@ -4,6 +4,9 @@ networks:
   server-network:
 
 services:
+  redis:
+    image: redis:5
+
   db:
     image: postgres:13
     container_name: server-postgres
@@ -25,6 +28,7 @@ services:
       dockerfile: docker/prod-server/Dockerfile # change this line to 'docker/prod-server/Dockerfile' for prod.
     depends_on:
       - db
+      - redis
     ports:
       - "80:80"  # change this line to "80:80" for prod. (test-server: "3735:3735")
     volumes:
