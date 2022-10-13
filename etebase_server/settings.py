@@ -168,7 +168,7 @@ if any(os.path.isfile(x) for x in config_locations):
         AWS_ACCESS_KEY_ID = section.get("AWS_ACCESS_KEY_ID", "")
         AWS_SECRET_ACCESS_KEY = section.get("AWS_SECRET_ACCESS_KEY", "")
         AWS_STORAGE_BUCKET_NAME = section.get("AWS_STORAGE_BUCKET_NAME", "")
-        AWS_DEFAULT_ACL = 'public-read'  # None
+        AWS_DEFAULT_ACL = None  # change it to 'public-read' if aws s3 bucket is public.
 
     if "redis_uri" in section:
         ETEBASE_REDIS_URI = section.get("redis_uri")
