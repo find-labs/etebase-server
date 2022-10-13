@@ -1,3 +1,4 @@
+import requests
 import typing as t
 from typing_extensions import Literal
 from datetime import datetime
@@ -257,7 +258,28 @@ def signup_save(data: SignupIn, request: Request) -> UserType:
 
 @authentication_router.post("/signup/", response_model=LoginOut, status_code=status.HTTP_201_CREATED)
 def signup(data: SignupIn, request: Request):
+
+    print("starting user verification process. user data: ", data)
+    user_exists, response_status_code = verify_user(data.user.email, settings.API_SECRET)
+    print(f"verification process response: {user_exists} - {response_status_code}")
+    if not user_exists:
+        raise HttpError("invalid_user",
+                        "Invalid user request. email: " + data.user.email + ", (status: " + str(response_status_code) + ")",
+                        status_code=status.HTTP_400_BAD_REQUEST)
+
     user = signup_save(data, request)
     ret = LoginOut.from_orm(user)
     user_signed_up.send(sender=user.__class__, request=None, user=user)
     return ret
+
+
+def verify_user(email, secret):
+    base_domain = settings.SIGN_UP_VERIFICATION_BASE_DOMAIN
+    url = f"{base_domain}/200"  # test for success
+    # url = f"{base_domain}/401"  # test for failure.
+    url += f"?username=${email}&secret=${secret}"
+
+    response_data = requests.get(url)
+    user_exists = True if response_data.status_code == 200 else False
+
+    return user_exists, response_data.status_code

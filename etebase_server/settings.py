@@ -132,6 +132,8 @@ STATIC_ROOT = os.environ.get("DJANGO_STATIC_ROOT", os.path.join(BASE_DIR, "stati
 MEDIA_ROOT = os.environ.get("DJANGO_MEDIA_ROOT", os.path.join(BASE_DIR, "media"))
 MEDIA_URL = "/user-media/"
 
+API_SECRET = 'some_secret'
+SIGN_UP_VERIFICATION_BASE_DOMAIN = 'https://example.com'
 
 # Define where to find configuration files
 config_locations = [
@@ -157,6 +159,8 @@ if any(os.path.isfile(x) for x in config_locations):
     LANGUAGE_CODE = section.get("language_code", LANGUAGE_CODE)
     TIME_ZONE = section.get("time_zone", TIME_ZONE)
     DEBUG = section.getboolean("debug", DEBUG)
+    API_SECRET = section.get("api_secret", API_SECRET)
+    SIGN_UP_VERIFICATION_BASE_DOMAIN = section.get("sign_up_verification_base_domain", SIGN_UP_VERIFICATION_BASE_DOMAIN)
 
     if not DEBUG:
         DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
