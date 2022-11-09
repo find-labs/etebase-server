@@ -8,6 +8,7 @@ Session.vim
 /tmp
 /media
 /.idea
+.env
 
 __pycache__
 .*.swp
