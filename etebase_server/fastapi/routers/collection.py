@@ -60,6 +60,9 @@ class CollectionItemRevisionInOut(BaseModel):
         chunks: t.List[ChunkType] = []
         for chunk_relation in obj.chunks_relation.all():
             chunk_obj = chunk_relation.chunk
+            print("here")
+            print(chunk_obj)
+            print(chunk_obj.chunkFile.path)
             if context.prefetch == "auto":
                 with open(chunk_obj.chunkFile.path, "rb") as f:
                     chunks.append((chunk_obj.uid, f.read()))
