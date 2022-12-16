@@ -73,8 +73,8 @@ class CollectionItemRevisionInOut(BaseModel):
                     print("The new directory is created!")
 
                 temp_file_path = temp_folder + chunk_obj.uid
-                s3 = boto3.client('s3', aws_access_key_id="AKIARXDELOGP2M6ELHAG" , aws_secret_access_key="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")
-                s3.download_file('find-etebase-store-dev',chunk_obj.chunkFile.name,temp_file_path )
+                s3 = boto3.client('s3', aws_access_key_id=env("AWS_ACCESS_KEY_ID") , aws_secret_access_key=env("AWS_SECRET_ACCESS_KEY"))
+                s3.download_file(env("AWS_STORAGE_BUCKET_NAME"),chunk_obj.chunkFile.name,temp_file_path )
             else:
                 temp_file_path = chunk_obj.chunkFile.path
             if context.prefetch == "auto":
