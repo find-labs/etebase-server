@@ -30,6 +30,11 @@ from ..dependencies import get_collection_queryset, get_item_queryset, get_colle
 from ..sendfile import sendfile
 from ..redis import redisw
 from ..db_hack import django_db_cleanup_decorator
+import boto3
+import os
+import environ
+env = environ.Env()
+
 
 collection_router = APIRouter(route_class=MsgpackRoute, responses=permission_responses)
 item_router = APIRouter(route_class=MsgpackRoute, responses=permission_responses)
@@ -60,8 +65,20 @@ class CollectionItemRevisionInOut(BaseModel):
         chunks: t.List[ChunkType] = []
         for chunk_relation in obj.chunks_relation.all():
             chunk_obj = chunk_relation.chunk
+            if env("debug") == "false" or env("debug") == False:
+                temp_folder = '/tmp/media/'
+                isExist = os.path.exists(temp_folder)
+                if not isExist:
+                    os.makedirs(temp_folder)
+                    print("The new directory is created!")
+
+                temp_file_path = temp_folder + chunk_obj.uid
+                s3 = boto3.client('s3', aws_access_key_id=env("AWS_ACCESS_KEY_ID") , aws_secret_access_key=env("AWS_SECRET_ACCESS_KEY"))
+                s3.download_file(env("AWS_STORAGE_BUCKET_NAME"),chunk_obj.chunkFile.name,temp_file_path )
+            else:
+                temp_file_path = chunk_obj.chunkFile.path
             if context.prefetch == "auto":
-                with open(chunk_obj.chunkFile.path, "rb") as f:
+                with open(temp_file_path, "rb") as f:
                     chunks.append((chunk_obj.uid, f.read()))
             else:
                 chunks.append((chunk_obj.uid, None))
